@@ -1,6 +1,6 @@
 # Vybe - Your Ultimate Music Experience
 
-Vybe is a modern web application that allows users to discover curated playlists that match their energy, aesthetic, and mood. The application integrates with the Spotify API to provide a seamless music discovery experience.
+Modern music streaming interface using Spotify API that allows users to discover curated playlists that match their energy, aesthetic, and mood.
 
 ## Features
 
