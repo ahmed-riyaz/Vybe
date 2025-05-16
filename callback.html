@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vybe Auth Callback</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Optional: for basic styling -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="modern-ui.css"> <!-- Add our new modern UI styles -->
     <style>
         body { display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; }
         .loading-spinner {
@@ -40,9 +41,9 @@
                 document.body.innerHTML = '<p style="color: red;">Authentication failed. Redirecting home...</p>';
                 setTimeout(() => {
                     window.location.replace('index.html');
-                }, 3000);
-            }
+                }, 3000);            }
         });
     </script>
+    <script src="modern-ui.js"></script>
 </body>
 </html>

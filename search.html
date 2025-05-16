@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Tracks - Vybe</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="modern-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Specific styles for search page */
@@ -163,19 +164,11 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar scrolled"> <!-- Assume scrolled state for consistency -->
-        <div class="container navbar-container">
-            <a href="index.html" class="navbar-brand">vybe</a>
-            <ul class="navbar-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Discover</a></li>
-                <li><a href="#">Trending</a></li>
-                <li><a href="my-playlists.html">My Playlists</a></li> <!-- Added My Playlists Link -->
-                <li><a href="search.html" aria-label="Search" class="active"><i class="fas fa-search"></i></a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Custom cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    
+    <!-- Modern Header (will be inserted by JavaScript) -->
 
     <!-- Search Section -->
     <section class="search-container">
@@ -227,13 +220,17 @@
                          <li><a href="#">privacy policy</a></li>
                      </ul>
                  </div>
-             </div>
-            <div class="copyright">
-                &copy; 2025 Vybe. All rights reserved.
-            </div>
+             </div>            <!-- Copyright will be handled by our modern footer -->
         </div>
     </footer>
 
     <script src="search.js"></script>
+    <script src="cursor.js"></script>
+    <script src="modern-ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            createPageLayout(); // Create the new modern interface layout
+        });
+    </script>
 </body>
 </html>

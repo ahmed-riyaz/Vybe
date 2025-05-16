@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="parallax-styles.css">
     <link rel="stylesheet" href="enhanced-content.css">
+    <link rel="stylesheet" href="modern-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Add favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
@@ -24,21 +25,7 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
     
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container navbar-container">
-            <a href="index.html" class="navbar-brand">vybe</a>            <ul class="navbar-links">
-                <li><a href="index.html" class="active">home</a></li>
-                <li><a href="#">discover</a></li>
-                <li><a href="playlist-details.html?id=37i9dQZF1DXcBWIGoYBM5M&name=Today's%20Top%20Hits">trending</a></li>
-                <li><a href="my-playlists.html">my playlists</a></li> <!-- Added My Playlists Link -->
-                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li> <!-- Added Search Link -->
-            </ul>
-            <button class="navbar-toggle" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </nav>
+    <!-- Modern Header (will be inserted by JavaScript) -->
     
     <!-- Enhanced Parallax Container with more elements -->
     <div class="parallax-container">
@@ -526,8 +513,7 @@
             <div class="copyright">
                 &copy; 2025 Vybe. All rights reserved. Your sound, your mood, always.
             </div>
-        </div>
-    </footer>
+        </div>    </footer>
 
     <!-- Scripts -->
     <script src="preloader.js"></script>
@@ -535,6 +521,12 @@
     <script src="animations.js"></script>
     <script src="script.js"></script>
     <script src="playlist-functions-fixed.js"></script>
+    <script src="modern-ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            createPageLayout(); // Create the new modern interface layout
+        });
+    </script>
 </body>
 
 </html>

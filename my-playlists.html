@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Playlists - Vybe</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="modern-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Add favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
@@ -276,21 +277,17 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar scrolled">
-        <div class="container navbar-container">
-            <a href="index.html" class="navbar-brand">vybe</a>
-            <ul class="navbar-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Discover</a></li>
-                <li><a href="#">Trending</a></li>
-                <li><a href="my-playlists.html" class="active">My Playlists</a></li>
-                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li>
-            </ul>
-            <!-- Add Logout Button if logged in -->
-            <button id="logout-btn" class="btn btn-secondary ml-auto hidden">Logout</button>
-        </div>
-    </nav>
+    <!-- Custom cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    
+    <!-- Modern Header (will be inserted by JavaScript) -->
+    <!-- Logout button for authenticated users -->
+    <div class="vybe-container" style="margin-top: 80px;">
+        <button id="logout-btn" class="vybe-button vybe-button-outlined" style="display: none; margin-left: auto;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
 
     <!-- Main Content -->
     <section class="my-playlists-container">
@@ -341,19 +338,16 @@
                 <button type="submit" id="submit-create-playlist">Create Playlist</button>
             </form>
         </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-       <div class="container">
-           <!-- Footer content -->
-           <div class="copyright">
-               &copy; 2025 Vybe. All rights reserved.
-           </div>
-       </div>
-   </footer>
+    </div>    <!-- Modern Footer will be inserted by JavaScript -->
 
     <script src="auth.js"></script>
     <script src="my-playlists.js"></script>
+    <script src="cursor.js"></script>
+    <script src="modern-ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            createPageLayout(); // Create the new modern interface layout
+        });
+    </script>
 </body>
 </html>

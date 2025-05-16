@@ -6,6 +6,7 @@
     <title>Category Details - Vybe</title>
     <meta name="description" content="Explore music playlists and artists in your favorite genres">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="modern-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Preload key assets -->
     <link rel="preload" href="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" as="image">
@@ -363,19 +364,11 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar scrolled">
-        <div class="container navbar-container">
-            <a href="index.html" class="navbar-brand">vybe</a>
-            <ul class="navbar-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Discover</a></li>
-                <li><a href="#">Trending</a></li>
-                <li><a href="my-playlists.html">My Playlists</a></li> <!-- Added My Playlists Link -->
-                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Custom cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    
+    <!-- Modern Header (will be inserted by JavaScript) -->
 
     <!-- Category Banner -->
     <section class="category-banner">
@@ -488,6 +481,8 @@
 
     <!-- Scripts -->
     <script src="preloader.js"></script>
+    <script src="cursor.js"></script>
+    <script src="modern-ui.js"></script>
     <script>
         // Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
@@ -835,11 +830,13 @@
             });
         }
         
-        // Start the application when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
+        // Start the application when the page loads        document.addEventListener('DOMContentLoaded', () => {
             init();
             initViewControls();
+            createPageLayout(); // Create the new modern interface layout
         });
     </script>
+    <script src="cursor.js"></script>
+    <script src="modern-ui.js"></script>
 </body>
 </html>

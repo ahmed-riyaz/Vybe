@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Details - Vybe</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="modern-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Add favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
@@ -324,19 +325,11 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar scrolled">
-        <div class="container navbar-container">
-            <a href="index.html" class="navbar-brand">vybe</a>
-            <ul class="navbar-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Discover</a></li>
-                <li><a href="#">Trending</a></li>
-                <li><a href="my-playlists.html">My Playlists</a></li> <!-- Added My Playlists Link -->
-                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li>
-            </ul>
-        </div>
-    </nav>    <!-- Loading State -->
+    <!-- Custom cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    
+    <!-- Modern Header (will be inserted by JavaScript) --><!-- Loading State -->
     <div id="loading" class="loading">
         <div class="loading-spinner"></div>
         <p>Loading track details...</p>
@@ -440,9 +433,17 @@
                 <!-- Playlists will be loaded here -->
             </ul>
             <button id="add-to-selected-playlist" class="action-button" disabled>
-                Add Track
-            </button>
+                Add Track            </button>
         </div>
     </div>
+
+    <script src="track-details.js"></script>
+    <script src="cursor.js"></script>
+    <script src="modern-ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            createPageLayout(); // Create the new modern interface layout
+        });
+    </script>
 </body>
 </html>
