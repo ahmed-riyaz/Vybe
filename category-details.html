@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Details - Vybe</title>
+    <meta name="description" content="Explore music playlists and artists in your favorite genres">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Preload key assets -->
+    <link rel="preload" href="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" as="image">
+    <style>
+        /* Category details specific styles */
+        .category-banner {
+            position: relative;
+            height: 40vh;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+        
+        .category-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.5), rgba(10, 10, 10, 0.85));
+            z-index: 1;
+        }
+        
+        .category-banner-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            filter: brightness(0.9) saturate(1.4);
+        }
+        
+        .category-info {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 var(--space-lg);
+        }
+        
+        .category-heading {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: var(--space-md);
+            color: var(--white);
+            text-transform: lowercase;
+            letter-spacing: -0.02em;
+        }
+        
+        .category-subheading {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: var(--space-lg);
+            color: var(--white-soft);
+        }
+        
+        .category-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xl);
+            margin-top: var(--space-lg);
+        }
+        
+        .category-stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--pink-hot);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--white-muted);
+        }
+        
+        /* Playlist cards */
+        .playlists-container {
+            padding: var(--space-xl) 0;
+        }
+        
+        .playlists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+        
+        .playlist-card {
+            background: linear-gradient(145deg, rgba(30, 30, 35, 0.7), rgba(15, 15, 15, 0.9));
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.4, 1.5), 
+                        box-shadow 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 100%;
+            cursor: pointer;
+            opacity: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .playlist-card.visible {
+            animation: fadeUp 0.5s forwards;
+        }
+        
+        .playlist-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: rgba(255, 60, 172, 0.2);
+            box-shadow: 0 15px 30px rgba(142, 45, 226, 0.3);
+        }
+        
+        .playlist-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                       filter 0.5s ease;
+        }
+        
+        .playlist-card:hover .playlist-image {
+            transform: scale(1.08);
+            filter: brightness(1.1) saturate(1.2);
+        }
+        
+        .playlist-content {
+            padding: var(--space-md);
+        }
+        
+        /* Artist circles */
+        .artist-showcase {
+            margin: var(--space-xl) 0;
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .artist-showcase h2 {
+            margin-bottom: var(--space-md);
+            font-size: 2rem;
+            color: var(--white);
+        }
+        
+        .artists-row {
+            display: flex;
+            gap: var(--space-md);
+            overflow-x: auto;
+            padding: var(--space-sm) 0;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .artists-row::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .artists-row::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-full);
+        }
+        
+        .artists-row::-webkit-scrollbar-thumb {
+            background: var(--purple-main);
+            border-radius: var(--radius-full);
+        }
+        
+        .artist-item {
+            flex: 0 0 auto;
+            width: 150px;
+            text-align: center;
+            scroll-snap-align: start;
+        }
+        
+        .artist-image-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto var(--space-xs);
+            overflow: hidden;
+            border: 3px solid rgba(142, 45, 226, 0.4);
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.4s ease;
+        }
+        
+        .artist-image-container:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 10px 20px rgba(142, 45, 226, 0.3);
+            border-color: var(--pink-hot);
+        }
+        
+        .artist-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease;
+        }
+        
+        .artist-image-container:hover .artist-image {
+            filter: brightness(1.2);
+        }
+        
+        .artist-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--white);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .artist-genre {
+            font-size: 0.8rem;
+            color: var(--white-muted);
+        }
+        
+        
+        .playlist-title {
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-xs);
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .playlist-info {
+            color: var(--white-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-lg);
+            color: var(--white-alt);
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+        
+        .back-button:hover {
+            color: var(--neon-purple);
+        }
+        
+        .back-button i {
+            font-size: 0.9rem;
+        }
+        
+        .section-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .view-options {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+        
+        .view-option {
+            background: var(--mid-gray);
+            border: none;
+            color: var(--white-alt);
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .view-option:hover,
+        .view-option.active {
+            background: var(--gradient-primary);
+            color: var(--white);
+        }
+
+        /* Add fallback styles for images */
+        .image-fallback {
+            background: linear-gradient(135deg, var(--purple-main), var(--pink-hot));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            text-transform: uppercase;
+            height: 100%;
+            width: 100%;
+        }
+        
+        /* Add loading animation */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        .loading-img {
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Error message styling */
+        .error-message {
+            background: rgba(255, 60, 172, 0.1);
+            border-left: 4px solid var(--pink-hot);
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Improve List view for playlists */
+        .playlists-grid.list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .playlists-grid.list-view .playlist-card {
+            display: flex;
+            flex-direction: row;
+            height: 80px;
+        }
+        
+        .playlists-grid.list-view .playlist-image-container {
+            width: 80px;
+            min-width: 80px;
+            height: 80px;
+        }
+        
+        .playlists-grid.list-view .playlist-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+        
+        /* Fix for safari and other browsers */
+        .playlist-image-container {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(30, 30, 35, 0.7), rgba(15, 15, 15, 0.9));
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">vybe</a>
+            <ul class="navbar-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Discover</a></li>
+                <li><a href="#">Trending</a></li>
+                <li><a href="my-playlists.html">My Playlists</a></li> <!-- Added My Playlists Link -->
+                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Category Banner -->
+    <section class="category-banner">
+        <img id="category-background" class="category-banner-bg" src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Category Background">
+        <div class="category-info">
+            <h1 id="category-title" class="category-heading">Loading...</h1>
+            <p class="category-subheading">Explore the best tracks and playlists</p>
+            <div class="category-stats">
+                <div class="category-stat">
+                    <div class="stat-value" id="playlist-count">0</div>
+                    <div class="stat-label">Playlists</div>
+                </div>
+                <div class="category-stat">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artist Showcase Section -->
+    <section class="artist-showcase">
+        <div class="container">
+            <h2>Popular Artists</h2>
+            <div id="artists-container" class="artists-row">
+                <!-- Artists will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Playlists Section -->
+    <section class="playlists-container">
+        <div class="container">
+            <div class="section-actions">
+                <a href="index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Categories</span>
+                </a>
+                <div class="view-options">
+                    <button class="view-option active" aria-label="Grid View">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-option" aria-label="List View">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Loading playlists...</p>
+            </div>
+            
+            <div id="playlists-container" class="playlists-grid"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <a href="#" class="footer-brand">vybe</a>
+                    <p class="footer-text">Your perfect soundtrack for every moment. Discover, listen, and experience music like never before.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Discover</a></li>
+                        <li><a href="#">Trending</a></li>
+                        <li><a href="#">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Pop</a></li>
+                        <li><a href="#">Hip Hop</a></li>
+                        <li><a href="#">Rock</a></li>
+                        <li><a href="#">Electronic</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="copyright">&copy; 2023 Vybe. All rights reserved.</p>
+                <p>Designed with ❤️ for music lovers</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Scripts -->
+    <script src="preloader.js"></script>
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryId = urlParams.get('id');
+        const categoryName = urlParams.get('name');
+        
+        // DOM elements
+        const categoryTitleElement = document.getElementById('category-title');
+        const loadingElement = document.getElementById('loading');
+        const playlistsContainer = document.getElementById('playlists-container');
+        const playlistCountElement = document.getElementById('playlist-count');
+        const artistsContainer = document.getElementById('artists-container');
+        
+        // Spotify API credentials
+        const CLIENT_ID = '8dd545fb3d3f4a2a9cc2b5be29185cb6';
+        const CLIENT_SECRET = '6fa150638ba24eee8b3aa30906180628';
+        
+        // Function to get an access token
+        async function getAccessToken() {
+            try {
+                // Check if we have a cached token that's still valid
+                const cachedToken = sessionStorage.getItem('vybe_token');
+                const tokenExpiry = sessionStorage.getItem('vybe_token_expiry');
+                
+                if (cachedToken && tokenExpiry && Date.now() < parseInt(tokenExpiry)) {
+                    return cachedToken;
+                }
+                
+                const response = await fetch('https://accounts.spotify.com/api/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'Basic ' + btoa(CLIENT_ID + ':' + CLIENT_SECRET)
+                    },
+                    body: 'grant_type=client_credentials'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to get access token');
+                }
+
+                const data = await response.json();
+                
+                // Cache the token (expires in 1 hour = 3600 seconds)
+                sessionStorage.setItem('vybe_token', data.access_token);
+                sessionStorage.setItem('vybe_token_expiry', (Date.now() + (data.expires_in * 1000)).toString());
+                
+                return data.access_token;
+            } catch (error) {
+                console.error('Error getting access token:', error);
+                return null;
+            }
+        }
+        
+        // Function to fetch playlists for a category
+        async function fetchPlaylists() {
+            try {
+                const token = await getAccessToken();
+                
+                if (!token) {
+                    throw new Error('Failed to get access token');
+                }
+                
+                // Try to get from cache first
+                const cacheKey = `playlists_${categoryId}`;
+                const cachedData = sessionStorage.getItem(cacheKey);
+                const cacheTime = sessionStorage.getItem(`${cacheKey}_time`);
+                
+                // Use cache if it's less than 30 minutes old
+                if (cachedData && cacheTime && (Date.now() - parseInt(cacheTime)) < 1800000) {
+                    return JSON.parse(cachedData);
+                }
+                
+                const response = await fetch(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists?limit=30`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                // Handle 404 errors gracefully
+                if (response.status === 404) {
+                    console.warn(`Category ${categoryId} not found or has no playlists`);
+                    
+                    // Try fallback to search for playlists by category name
+                    return await searchPlaylistsByCategory(token, categoryName);
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch playlists: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Cache the results
+                if (data.playlists && data.playlists.items) {
+                    sessionStorage.setItem(cacheKey, JSON.stringify(data.playlists.items));
+                    sessionStorage.setItem(`${cacheKey}_time`, Date.now().toString());
+                    return data.playlists.items;
+                }
+                
+                return [];
+            } catch (error) {
+                console.error('Error fetching playlists:', error);
+                return [];
+            }
+        }
+        
+        // Fallback: Search for playlists by category name
+        async function searchPlaylistsByCategory(token, categoryName) {
+            try {
+                if (!token || !categoryName) return [];
+                
+                const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(categoryName)}&type=playlist&limit=20`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    return [];
+                }
+                
+                const data = await response.json();
+                return data.playlists?.items || [];
+                
+            } catch (error) {
+                console.error('Error searching playlists:', error);
+                return [];
+            }
+        }
+        
+        // Display playlists with improved error handling
+        function displayPlaylists(playlists) {
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+            
+            // *** ADDED: Filter out null or invalid playlist items upfront ***
+            const validPlaylists = playlists.filter(playlist => playlist && playlist.name);
+
+            if (!validPlaylists || validPlaylists.length === 0) {
+                showError(`No valid playlists found for "${categoryName}". Try another category.`);
+                playlistCountElement.textContent = 0; // Ensure count is 0
+                return;
+            }
+            
+            // Update playlist count with the count of *valid* playlists
+            if (playlistCountElement) {
+                playlistCountElement.textContent = validPlaylists.length;
+            }
+            
+            // Clear container first
+            if (playlistsContainer) {
+                playlistsContainer.innerHTML = '';
+            
+                // Display each *valid* playlist with staggered animations
+                validPlaylists.forEach((playlist, index) => {
+                    const playlistCard = document.createElement('div');
+                    playlistCard.className = 'playlist-card';
+                    
+                    // Get image URL with fallback
+                    let imageUrl = '';
+                    // Use playlist.name safely now
+                    let placeholderText = playlist.name.charAt(0) || 'V'; 
+                    
+                    if (playlist.images && playlist.images.length > 0) {
+                        imageUrl = playlist.images[0].url;
+                        
+                        // Preload the image if the preloader is available
+                        if (window.imagePreloader) {
+                            window.imagePreloader.queueImage(imageUrl);
+                        }
+                    }
+                    
+                    playlistCard.innerHTML = `
+                        <div class="playlist-image-container">
+                            ${imageUrl ? 
+                                `<img class="playlist-image" src="${imageUrl}" alt="${playlist.name}" 
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="playlist-image image-fallback" style="display:none;">${placeholderText}</div>` :
+                                `<div class="playlist-image image-fallback">${placeholderText}</div>`
+                            }
+                        </div>
+                        <div class="playlist-content">
+                            <h3 class="playlist-title">${playlist.name || 'Untitled Playlist'}</h3>
+                            <p class="playlist-info">
+                                <i class="fas fa-music"></i>
+                                <span>${playlist.tracks?.total || '?'} tracks</span>
+                            </p>
+                        </div>
+                    `;
+                    
+                    // Add click event to navigate to playlist detail page
+                    playlistCard.addEventListener('click', () => {
+                        // Navigate to a new detail page, passing playlist ID and name
+                        window.location.href = `playlist-details.html?id=${playlist.id}&name=${encodeURIComponent(playlist.name || 'Playlist')}`;
+                    });
+                    
+                    // Add staggered animation
+                    setTimeout(() => {
+                        playlistCard.classList.add('visible');
+                    }, index * 50);
+                    
+                    playlistsContainer.appendChild(playlistCard);
+                });
+            }
+        }
+        
+        // Set the appropriate background image based on category
+        function setBackgroundImage(categoryName) {
+            const backgroundElement = document.getElementById('category-background');
+            if (!backgroundElement) return;
+            
+            const lowerName = categoryName.toLowerCase();
+            
+            // Default background
+            let bgImage = 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
+            
+            // Map of category names to background images
+            const backgroundMap = {
+                'pop': 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'hip hop': 'https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'rap': 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'rock': 'https://images.unsplash.com/photo-1603363615752-693b4e0a4ce8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'electronic': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'jazz': 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'r&b': 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'indie': 'https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'chill': 'https://images.unsplash.com/photo-1520262454473-a1a82276a574?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'mood': 'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'workout': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'focus': 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'party': 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                'sleep': 'https://images.unsplash.com/photo-1531353826977-0941b4779a1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+            };
+            
+            // Check for any matching category
+            for (const [key, url] of Object.entries(backgroundMap)) {
+                if (lowerName.includes(key)) {
+                    bgImage = url;
+                    break;
+                }
+            }
+            
+            // Preload the image if preloader is available
+            if (window.imagePreloader) {
+                window.imagePreloader.queueImage(bgImage);
+            }
+            
+            // Add loading state and error handling
+            backgroundElement.classList.add('loading-img');
+            backgroundElement.onerror = function() {
+                this.onerror = null;
+                this.src = 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
+            };
+            backgroundElement.onload = function() {
+                this.classList.remove('loading-img');
+            };
+            backgroundElement.src = bgImage;
+        }
+        
+        // Show error message with better styling
+        function showError(message) {
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+            
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.innerHTML = `
+
+                <i class="fas fa-exclamation-circle" style="margin-right: 10px;"></i>
+                <span>${message}</span>
+                <button class="btn" style="margin-left: 15px; padding: 5px 10px;" onclick="init()">Try Again</button>
+            `;
+            
+            if (playlistsContainer) {
+                playlistsContainer.innerHTML = '';
+                playlistsContainer.appendChild(errorElement);
+            }
+        }
+        
+        // Initialize the page
+        async function init() {
+            // Set page title and category name
+            if (categoryName) {
+                document.title = `${categoryName} - Vybe`;
+                if (categoryTitleElement) {
+                    categoryTitleElement.textContent = categoryName;
+                }
+                setBackgroundImage(categoryName);
+            } else {
+                // Handle missing category name
+                if (categoryTitleElement) {
+                    categoryTitleElement.textContent = "Unknown Category";
+                }
+                showError("Category information is missing. Please return to the home page.");
+                return;
+            }
+            
+            try {
+                // Clear previous error messages
+                const previousErrors = document.querySelectorAll('.error-message');
+                previousErrors.forEach(error => error.remove());
+                
+                // Show loading spinner
+                if (loadingElement) {
+                    loadingElement.style.display = 'flex';
+                }
+                if (playlistsContainer) {
+                    playlistsContainer.innerHTML = '';
+                }
+                
+                // Fetch and display playlists
+                const playlists = await fetchPlaylists();
+                displayPlaylists(playlists);
+            } catch (error) {
+                console.error('Error initializing page:', error);
+                showError('Something went wrong. Please try again later.');
+            }
+        }
+        
+        // Initialize view controls
+        function initViewControls() {
+            const viewOptions = document.querySelectorAll('.view-option');
+            if (!viewOptions.length) return;
+            
+            viewOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    viewOptions.forEach(o => o.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Toggle grid/list view based on clicked option
+                    if (this.querySelector('.fa-list')) {
+                        playlistsContainer.classList.add('list-view');
+                        playlistsContainer.classList.remove('grid-view');
+                    } else {
+                        playlistsContainer.classList.add('grid-view');
+                        playlistsContainer.classList.remove('list-view');
+                    }
+                });
+            });
+        }
+        
+        // Start the application when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            initViewControls();
+        });
+    </script>
+</body>
+</html>

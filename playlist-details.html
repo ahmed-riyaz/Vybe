@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Details - Vybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+    <style>
+        /* Add specific styles for playlist details page if needed */
+        .playlist-banner {
+            position: relative;
+            height: 40vh;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .playlist-banner-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4) blur(5px);
+            transform: scale(1.1);
+            z-index: -1;
+        }
+
+        .playlist-info {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 var(--space-md);
+        }
+
+        .playlist-cover {
+            width: 150px;
+            height: 150px;
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .playlist-heading {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .playlist-description {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--white-soft);
+            margin-bottom: var(--space-md);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .playlist-meta {
+            font-size: 0.9rem;
+            color: var(--white-muted);
+        }
+
+        .tracks-container {
+            padding: var(--space-xl) 0;
+        }
+
+        .tracks-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-width: 900px;
+            margin: var(--space-lg) auto;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            padding: var(--space-md);
+            margin-bottom: var(--space-sm);
+            background: rgba(30, 30, 35, 0.5);
+            border-radius: var(--radius-sm);
+            transition: background 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .track-item:hover {
+            background: rgba(40, 40, 45, 0.8);
+        }
+
+        .track-number {
+            width: 30px;
+            text-align: center;
+            color: var(--white-muted);
+            font-size: 0.9rem;
+            margin-right: var(--space-md);
+        }
+
+        .track-album-art {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: var(--radius-xs);
+            margin-right: var(--space-md);
+        }
+
+        .track-details {
+            flex-grow: 1;
+            overflow: hidden; /* Prevent long text from breaking layout */
+        }
+
+        .track-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-artist {
+            font-size: 0.9rem;
+            color: var(--white-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-duration {
+            color: var(--white-muted);
+            font-size: 0.9rem;
+            margin-left: var(--space-md);
+        }
+
+         .loading, .error-message {
+            text-align: center;
+            padding: var(--space-xl);
+            color: var(--white-muted);
+        }
+         .loading-spinner {
+             border: 4px solid rgba(255, 255, 255, 0.2);
+             border-left-color: var(--pink-hot);
+             border-radius: 50%;
+             width: 40px;
+             height: 40px;
+             animation: spin 1s linear infinite;
+             margin: 0 auto var(--space-md) auto;
+         }
+         @keyframes spin { to { transform: rotate(360deg); } }
+
+         .back-button {
+             display: inline-flex;
+             align-items: center;
+             gap: var(--space-xs);
+             margin: var(--space-lg) 0;
+             color: var(--white-alt);
+             transition: var(--transition-fast);
+             text-decoration: none;
+             padding: var(--space-sm) var(--space-md);
+             background: rgba(255, 255, 255, 0.1);
+             border-radius: var(--radius-sm);
+         }
+         .back-button:hover {
+             background: rgba(255, 255, 255, 0.2);
+             color: var(--white);
+         }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">vybe</a>
+            <ul class="navbar-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Discover</a></li>
+                <li><a href="#">Trending</a></li>
+                <li><a href="my-playlists.html">My Playlists</a></li> <!-- Added My Playlists Link -->
+                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Playlist Banner -->
+    <section class="playlist-banner">
+        <img id="playlist-background" class="playlist-banner-bg" src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Playlist Background">
+        <div class="playlist-info">
+            <img id="playlist-cover" class="playlist-cover" src="https://via.placeholder.com/150?text=Vybe" alt="Playlist Cover">
+            <h1 id="playlist-name" class="playlist-heading">Loading Playlist...</h1>
+            <p id="playlist-description" class="playlist-description">Discover the tracks in this vibe.</p>
+            <div class="playlist-meta">
+                <span id="playlist-owner"></span> &bull; <span id="playlist-track-count">0</span> tracks
+            </div>
+        </div>
+    </section>
+
+    <!-- Tracks Section -->
+    <section class="tracks-container">
+        <div class="container">
+             <a href="javascript:history.back()" class="back-button">
+                 <i class="fas fa-arrow-left"></i>
+                 <span>Back</span>
+             </a>
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Loading tracks...</p>
+            </div>
+            <ul id="tracks-list" class="tracks-list">
+                <!-- Tracks will be loaded dynamically -->
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+             <div class="footer-grid">
+                 <div>
+                     <a href="#" class="footer-brand">vybe</a>
+                     <p class="footer-tagline">your personal soundtrack to life.</p>
+                 </div>
+                 <div>
+                     <h4 class="footer-heading">quick links</h4>
+                     <ul class="footer-links">
+                         <li><a href="index.html">home</a></li>
+                         <li><a href="#">discover</a></li>
+                     </ul>
+                 </div>
+                 <div>
+                     <h4 class="footer-heading">support</h4>
+                     <ul class="footer-links">
+                         <li><a href="#">help center</a></li>
+                         <li><a href="#">privacy policy</a></li>
+                     </ul>
+                 </div>
+             </div>
+            <div class="copyright">
+                &copy; 2025 Vybe. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="playlist-details.js"></script>
+</body>
+</html>

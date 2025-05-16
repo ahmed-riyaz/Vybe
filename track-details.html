@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Details - Vybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+    <style>
+        /* Specific styles for track details page */
+        .track-detail-banner {
+            display: flex;
+            align-items: flex-end; /* Align items to bottom */
+            gap: var(--space-lg);
+            padding: var(--space-xl) var(--space-lg);
+            background: linear-gradient(to bottom, rgba(30, 30, 35, 0.7), rgba(23, 23, 25, 1) 80%), url('https://via.placeholder.com/1200x400?text=Loading...') no-repeat center center;
+            background-size: cover;
+            min-height: 300px;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            margin-bottom: var(--space-xl);
+            position: relative;
+            color: var(--white);
+        }
+
+        .track-cover-art {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .track-header-info {
+            flex-grow: 1;
+            padding-bottom: var(--space-sm); /* Align text better with bottom of image */
+        }
+
+        .track-type {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--white-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-xs);
+        }
+
+        .track-detail-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .track-meta-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.95rem;
+            color: var(--white-soft);
+        }
+
+        .track-meta-info img.artist-avatar {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin-right: -5px; /* Slight overlap */
+        }
+
+        .track-meta-info a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .track-meta-info a:hover {
+            color: var(--pink-light);
+            text-decoration: underline;
+        }
+
+        .track-meta-separator::before {
+            content: "\2022"; /* Bullet point */
+            margin: 0 var(--space-xs);
+            color: var(--white-muted);
+        }
+
+        .main-content-area {
+            padding: 0 var(--space-lg) var(--space-xl) var(--space-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title-detail {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--grey-dark);
+        }
+
+        .artist-info-container {
+            margin-bottom: var(--space-xl);
+        }
+
+        .artist-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            background: rgba(30, 30, 35, 0.5);
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: var(--space-sm);
+        }
+
+        .artist-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .artist-details h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+        }        .artist-details p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--white-muted);
+        }
+
+        .recommendations-container {
+            margin-top: var(--space-xl);
+        }
+
+        /* Re-use track item styles */
+        .tracks-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .track-item {
+            display: flex;
+            align-items: center;
+            padding: var(--space-md);
+            margin-bottom: var(--space-sm);
+            background: rgba(30, 30, 35, 0.5);
+            border-radius: var(--radius-sm);
+            transition: background 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+        }
+        .track-item:hover {
+            background: rgba(40, 40, 45, 0.8);
+        }
+        .track-number {
+            width: 30px;
+            text-align: center;
+            color: var(--white-muted);
+            font-size: 0.9rem;
+            margin-right: var(--space-md);
+        }
+        .track-album-art {
+             width: 40px; /* Smaller art for list */
+             height: 40px;
+             object-fit: cover;
+             border-radius: var(--radius-xs);
+             margin-right: var(--space-md);
+         }
+        .track-details {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        .track-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .track-artist {
+            font-size: 0.9rem;
+            color: var(--white-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .track-duration {
+            color: var(--white-muted);
+            font-size: 0.9rem;
+            margin-left: var(--space-md);
+        }
+
+        .loading, .error-message {
+            text-align: center;
+            padding: var(--space-xl);
+            color: var(--white-muted);
+        }
+         .loading-spinner {
+             border: 4px solid rgba(255, 255, 255, 0.2);
+             border-left-color: var(--pink-hot);
+             border-radius: 50%;
+             width: 40px;
+             height: 40px;
+             animation: spin 1s linear infinite;
+             margin: 0 auto var(--space-md) auto;
+         }
+         @keyframes spin { to { transform: rotate(360deg); } }
+
+         .back-button {
+             display: inline-flex;
+             align-items: center;
+             gap: var(--space-xs);
+             margin-bottom: var(--space-lg);
+             color: var(--white-alt);
+             transition: var(--transition-fast);
+             text-decoration: none;
+             padding: var(--space-sm) var(--space-md);
+             background: rgba(255, 255, 255, 0.1);
+             border-radius: var(--radius-sm);
+         }
+         .back-button:hover {
+             background: rgba(255, 255, 255, 0.2);
+             color: var(--white);
+         }
+
+         /* Track details page - action buttons */
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-lg);
+            margin-top: var(--space-md);
+            font-size: 0.95rem;
+            font-weight: 600;
+            background-color: var(--pink-hot);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .action-button:hover {
+            background-color: var(--pink-light);
+        }
+        .action-button:disabled {
+            background-color: var(--grey-dark);
+            cursor: not-allowed;
+        }
+        
+        /* Hide elements by default */
+        .hidden {
+            display: none;
+        }
+
+        /* Playlist selection modal */
+        .playlist-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+        .playlist-modal-content {
+            background-color: var(--black-alt);
+            margin: auto;
+            padding: var(--space-lg);
+            border: 1px solid var(--grey-dark);
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--radius-md);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .playlist-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--space-md) 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            padding: var(--space-sm);
+            margin-bottom: var(--space-xs);
+            border-radius: var(--radius-xs);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .playlist-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .playlist-item.selected {
+            background-color: rgba(255, 20, 147, 0.2);
+            border: 1px solid rgba(255, 20, 147, 0.4);
+        }
+        .playlist-thumbnail {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-xs);
+            margin-right: var(--space-sm);
+        }
+        .playlist-name {
+            font-weight: 600;
+            color: var(--white);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">vybe</a>
+            <ul class="navbar-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Discover</a></li>
+                <li><a href="#">Trending</a></li>
+                <li><a href="my-playlists.html">My Playlists</a></li> <!-- Added My Playlists Link -->
+                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li>
+            </ul>
+        </div>
+    </nav>    <!-- Loading State -->
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading track details...</p>
+    </div>
+
+    <!-- Error Message State -->
+    <div id="error-message" class="error-message hidden"></div>
+
+    <!-- Track Detail Content (Hidden until loaded) -->
+    <div id="track-content" class="hidden">
+        <!-- Track Banner -->
+        <section id="track-banner" class="track-detail-banner">
+            <img id="track-cover" class="track-cover-art" src="https://via.placeholder.com/200?text=Vybe" alt="Track Cover Art">
+            <div class="track-header-info">
+                <p class="track-type">Song</p>
+                <h1 id="track-title" class="track-detail-title">Track Title Loading...</h1>                <div class="track-meta-info">
+                    <!-- Artist avatars and names will be populated here -->
+                    <span id="artist-info">Artist Loading...</span>
+                    <span class="track-meta-separator"></span>
+                    <span id="album-link">Album Loading...</span>
+                    <span class="track-meta-separator"></span>
+                    <span id="track-year">Year</span>
+                    <span class="track-meta-separator"></span>
+                    <span id="track-duration">Duration</span>
+                </div>
+                <!-- Add to Playlist Button -->
+                <button id="add-to-playlist-btn" class="action-button hidden">
+                    <i class="fas fa-plus"></i> Add to Playlist
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content-area">
+             <a href="javascript:history.back()" class="back-button">
+                 <i class="fas fa-arrow-left"></i>
+                 <span>Back</span>
+             </a>
+
+            <!-- Artist Info Section -->
+            <section class="artist-info-container">
+                <h2 class="section-title-detail">Artists</h2>
+                <div id="artist-cards-container">
+                    <!-- Artist cards will be populated here -->
+                </div>
+            </section>
+
+            <!-- Recommendations (Tracks from the same album) -->
+            <section class="recommendations-container">
+                <h2 class="section-title-detail">From the Album: <span id="recommendation-album-title">Album Title</span></h2>
+                <ul id="recommendations-list" class="tracks-list">
+                    <!-- Recommended tracks will be loaded here -->
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                 <div>
+                     <a href="#" class="footer-brand">vybe</a>
+                     <p class="footer-tagline">your personal soundtrack to life.</p>
+                 </div>
+                 <div>
+                     <h4 class="footer-heading">quick links</h4>
+                     <ul class="footer-links">
+                         <li><a href="index.html">home</a></li>
+                         <li><a href="#">discover</a></li>
+                     </ul>
+                 </div>
+                 <div>
+                     <h4 class="footer-heading">support</h4>
+                     <ul class="footer-links">
+                         <li><a href="#">help center</a></li>
+                         <li><a href="#">privacy policy</a></li>
+                     </ul>
+                 </div>
+             </div>
+            <div class="copyright">
+                &copy; 2025 Vybe. All rights reserved.
+            </div>        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="track-details.js"></script>
+
+    <!-- Playlist Selection Modal -->
+    <div id="playlist-modal" class="playlist-modal">
+        <div class="playlist-modal-content">
+            <span id="close-playlist-modal" class="close-btn">&times;</span>
+            <h2>Add to Playlist</h2>
+            <p>Select a playlist to add this track to:</p>
+            <div id="playlist-modal-loading" class="loading hidden">
+                <div class="loading-spinner"></div>
+                <p>Loading your playlists...</p>
+            </div>
+            <div id="playlist-modal-message" class="info-message hidden"></div>
+            <ul id="playlist-list" class="playlist-list">
+                <!-- Playlists will be loaded here -->
+            </ul>
+            <button id="add-to-selected-playlist" class="action-button" disabled>
+                Add Track
+            </button>
+        </div>
+    </div>
+</body>
+</html>

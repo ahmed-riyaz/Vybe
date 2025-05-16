@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vybe - Your Ultimate Music Experience</title>
+    <meta name="description" content="Discover curated playlists that match your energy, aesthetic, and mood">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="parallax-styles.css">
+    <link rel="stylesheet" href="enhanced-content.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+    <!-- Preload key assets for better performance -->
+    <link rel="preload" as="image"
+        href="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80">
+    <link rel="preload" as="image"
+        href="https://images.unsplash.com/photo-1536904171932-9eacb8454753?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80">
+</head>
+
+<body>
+    <!-- Custom cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">vybe</a>            <ul class="navbar-links">
+                <li><a href="index.html" class="active">home</a></li>
+                <li><a href="#">discover</a></li>
+                <li><a href="playlist-details.html?id=37i9dQZF1DXcBWIGoYBM5M&name=Today's%20Top%20Hits">trending</a></li>
+                <li><a href="my-playlists.html">my playlists</a></li> <!-- Added My Playlists Link -->
+                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li> <!-- Added Search Link -->
+            </ul>
+            <button class="navbar-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Enhanced Parallax Container with more elements -->
+    <div class="parallax-container">
+        <!-- Parallax Images -->
+        <div class="parallax-image top-left parallax" data-speed="-0.15">
+            <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                alt="">
+        </div>
+        <div class="parallax-image bottom-right parallax" data-speed="0.12">
+            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+                alt="">
+        </div>
+        <div class="parallax-image center-left parallax" data-speed="0.08">
+            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80"
+                alt="">
+        </div>
+        <div class="parallax-image top-right parallax" data-speed="-0.1">
+            <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+                alt="">
+        </div>
+        <div class="parallax-image center-right parallax" data-speed="0.06">
+            <img src="https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+                alt="">
+        </div>
+        <div class="parallax-image bottom-center parallax" data-speed="-0.05">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+                alt="">
+        </div>
+        
+        <!-- Parallax Text Elements -->
+        <div class="parallax-text left parallax" data-speed="-0.05">vibe</div>
+        <div class="parallax-text right parallax" data-speed="0.07">sound</div>
+        <div class="parallax-text center parallax" data-speed="0.02">mood</div>
+        
+        <!-- Gradient Shapes -->
+        <div class="gradient-shape gradient-shape-1 parallax" data-speed="-0.02"></div>
+        <div class="gradient-shape gradient-shape-2 parallax" data-speed="0.04"></div>
+        <div class="gradient-shape gradient-shape-3 parallax" data-speed="0.03"></div>
+        <div class="gradient-shape gradient-shape-4 parallax" data-speed="-0.03"></div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1 class="hero-title">discover your <span class="highlight">perfect vibe</span></h1>
+            <p class="hero-subtitle">curated playlists that match your energy, aesthetic, and mood — exactly when you
+                need it</p>
+            <div class="hero-cta">
+                <a href="#categories" class="btn btn-primary btn-icon">
+                    explore now <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#" class="btn btn-secondary">how it works</a>
+            </div>
+        </div>
+        
+        <!-- Floating Music Notes Animation -->
+        <div class="floating-notes">
+            <div class="note note-1"><i class="fas fa-music"></i></div>
+            <div class="note note-2"><i
+                    class="fas fa-headphones"></i></div>
+            <div class="note note-3"><i
+                    class="fas fa-compact-disc"></i></div>
+            <div class="note note-4"><i
+                    class="fas fa-music"></i></div>
+            <div class="note note-5"><i
+                    class="fas fa-headphones"></i></div>
+            <div class="note note-6"><i
+                    class="fas fa-compact-disc"></i></div>
+        </div>
+        
+        <!-- Music Visualizer -->
+        <div class="music-visualizer">
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+        </div>
+    </section>
+    
+    <!-- Gen Z Quotes After Hero -->
+    <div class="scrolling-quotes-container">
+        <div class="scrolling-quotes marquee">
+            <div class="marquee-content">
+                <span class="quote-item">good vibes only <i class="fas fa-star"></i></span>
+                <span class="quote-item">music is therapy <i class="fas fa-headphones"></i></span>
+                <span class="quote-item">find your sound <i class="fas fa-music"></i></span>
+                <span class="quote-item">playlist > everything <i class="fas fa-heart"></i></span>
+                <span class="quote-item">it's the music for me <i class="fas fa-compact-disc"></i></span>
+                <span class="quote-item">main character energy <i class="fas fa-bolt"></i></span>
+            </div>
+            <div class="marquee-content" aria-hidden="true">
+                <span class="quote-item">good vibes only <i class="fas fa-star"></i></span>
+                <span class="quote-item">music is therapy <i class="fas fa-headphones"></i></span>
+                <span class="quote-item">find your sound <i class="fas fa-music"></i></span>
+                <span class="quote-item">playlist > everything <i class="fas fa-heart"></i></span>
+                <span class="quote-item">it's the music for me <i class="fas fa-compact-disc"></i></span>
+                <span class="quote-item">main character energy <i class="fas fa-bolt"></i></span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">why choose vybe</h2>
+                <p class="section-description">elevate your music experience with our unique features</p>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3 class="feature-title">millions of tracks</h3>
+                    <p class="feature-text">access an unlimited library of music across all genres, from chart-toppers
+                        to underground gems.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <h3 class="feature-title">mood-based playlists</h3>
+                    <p class="feature-text">discover playlists curated specifically for your current vibe, aesthetic, or
+                        activity.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">personalized for you</h3>
+                    <p class="feature-text">our algorithm learns your taste and suggests music that matches your unique
+                        style.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Y2K Quotes After Features -->
+    <div class="scrolling-quotes-container y2k">
+        <div class="scrolling-quotes marquee reverse">
+            <div class="marquee-content">
+                <span class="quote-item">no thoughts just vibes <i class="fas fa-cloud"></i></span>
+                <span class="quote-item">it's giving main character <i class="fas fa-film"></i></span>
+                <span class="quote-item">me, myself & my playlist <i class="fas fa-headphones-alt"></i></span>
+                <span class="quote-item">real hot girl stuff <i class="fas fa-fire"></i></span>
+                <span class="quote-item">iconic behavior <i class="fas fa-star"></i></span>
+                <span class="quote-item">so true bestie <i class="fas fa-heart"></i></span>
+            </div>
+            <div class="marquee-content" aria-hidden="true">
+                <span class="quote-item">no thoughts just vibes <i class="fas fa-cloud"></i></span>
+                <span class="quote-item">it's giving main character <i class="fas fa-film"></i></span>
+                <span class="quote-item">me, myself & my playlist <i class="fas fa-headphones-alt"></i></span>
+                <span class="quote-item">real hot girl stuff <i class="fas fa-fire"></i></span>
+                <span class="quote-item">iconic behavior <i class="fas fa-star"></i></span>
+                <span class="quote-item">so true bestie <i class="fas fa-heart"></i></span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Categories Section -->
+    <section class="section" id="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">explore categories</h2>
+                <p class="section-description">find the perfect soundtrack for any moment</p>
+            </div>
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">discovering the perfect vibe for you...</p>
+            </div>
+            <div id="categories-container" class="categories">
+                <!-- Categories will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- After Categories Section - Artist Showcase -->
+    <section class="section artist-showcase">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">trending artists</h2>
+                <p class="section-description">discover who's defining the sound right now</p>
+            </div>
+            
+            <div class="artists-row">
+                <!-- These would dynamically load from your backend in a real implementation -->
+                <div class="artist-card card-3d">
+                    <div class="artist-image-container">
+                        <img src="https://images.unsplash.com/photo-1522196772883-393d879eb14d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Artist" class="artist-image">
+                    </div>
+                    <div class="artist-name card-3d-content">olivia rodrigo</div>
+                    <div class="artist-genre">pop, indie</div>
+                </div>
+                
+                <div class="artist-card card-3d">
+                    <div class="artist-image-container">
+                        <img src="https://images.unsplash.com/photo-1615247001958-f4bc92fa6a4a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Artist" class="artist-image">
+                    </div>
+                    <div class="artist-name card-3d-content">the weeknd</div>
+                    <div class="artist-genre">r&b, pop</div>
+                </div>
+                
+                <div class="artist-card card-3d">
+                    <div class="artist-image-container">
+                        <img src="https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Artist" class="artist-image">
+                    </div>
+                    <div class="artist-name card-3d-content">tyler, the creator</div>
+                    <div class="artist-genre">hip-hop, rap</div>
+                </div>
+                
+                <div class="artist-card card-3d">
+                    <div class="artist-image-container">
+                        <img src="https://images.unsplash.com/photo-1520391160961-006b268a3fb8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Artist" class="artist-image">
+                    </div>
+                    <div class="artist-name card-3d-content">doja cat</div>
+                    <div class="artist-genre">pop, r&b</div>
+                </div>
+                
+                <div class="artist-card card-3d">
+                    <div class="artist-image-container">
+                        <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Artist" class="artist-image">
+                    </div>
+                    <div class="artist-name card-3d-content">billie eilish</div>
+                    <div class="artist-genre">pop, alternative</div>
+                </div>
+                
+                <div class="artist-card card-3d">
+                    <div class="artist-image-container">
+                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Artist" class="artist-image">
+                    </div>
+                    <div class="artist-name card-3d-content">kendrick lamar</div>
+                    <div class="artist-genre">hip-hop, rap</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inspirational Parallax Quote -->
+    <div class="parallax-quote" data-quote-index="0">
+        music is the soundtrack to your aesthetic
+    </div>
+
+    <!-- Mood Board Section -->
+    <section class="section mood-board-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">aesthetic moods</h2>
+                <p class="section-description">curate your vibe with our mood boards</p>
+            </div>
+            
+            <div class="mood-board-grid">
+                <div class="mood-card" data-mood="chill">
+                    <div class="mood-overlay">
+                        <h3 class="mood-title">lo-fi chill</h3>
+                        <p class="mood-description">study sessions & cozy evenings</p>
+                        <div class="mood-tag-container">
+                            <span class="mood-tag">lofi</span>
+                            <span class="mood-tag">beats</span>
+                            <span class="mood-tag">study</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mood-card" data-mood="y2k">
+                    <div class="mood-overlay">
+                        <h3 class="mood-title">y2k nostalgia</h3>
+                        <p class="mood-description">throwback to the 2000s era</p>
+                        <div class="mood-tag-container">
+                            <span class="mood-tag">throwback</span>
+                            <span class="mood-tag">nostalgic</span>
+                            <span class="mood-tag">pop</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mood-card" data-mood="main-character">
+                    <div class="mood-overlay">
+                        <h3 class="mood-title">main character energy</h3>
+                        <p class="mood-description">be the star of your own movie</p>
+                        <div class="mood-tag-container">
+                            <span class="mood-tag">cinematic</span>
+                            <span class="mood-tag">epic</span>
+                            <span class="mood-tag">soundtrack</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mood-card" data-mood="ethereal">
+                    <div class="mood-overlay">
+                        <h3 class="mood-title">ethereal dreamscape</h3>
+                        <p class="mood-description">float through ambient soundscapes</p>
+                        <div class="mood-tag-container">
+                            <span class="mood-tag">ambient</span>
+                            <span class="mood-tag">dream</span>
+                            <span class="mood-tag">chill</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Another Parallax Quote -->
+    <div class="parallax-quote" data-quote-index="1">
+        find your sound, express your vibe
+    </div>
+
+    <!-- Interactive Parallax Scene -->
+    <div class="parallax-scene">
+        <!-- Layers will be generated by JavaScript -->
+        <div class="scene-content">
+            <h2 class="scene-title">immerse yourself</h2>
+            <p class="scene-description">dive into a world where music and visuals collide</p>
+            <a href="#categories" class="btn btn-primary scene-cta">explore now</a>
+        </div>
+    </div>
+
+    <!-- Recently Played Section with Music Player Integration -->
+    <section class="section recently-played-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">your vybe radar</h2>
+                <p class="section-description">tracks we think match your energy</p>
+            </div>
+            
+            <div class="tracks-grid">
+                <!-- These would dynamically load from your backend in a real implementation -->
+                <div class="track-card" data-track-id="1">                    <div class="track-artwork">
+                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Track artwork">
+                    </div>
+                    <div class="track-info">
+                        <h3 class="track-title">midnight feelings</h3>
+                        <p class="track-artist">neon dreams</p>
+                    </div>
+                    <div class="track-meta">
+                        <span class="track-time">3:45</span>
+                        <button class="track-like-btn" aria-label="Like track">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="track-card" data-track-id="2">                    <div class="track-artwork">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Track artwork">
+                    </div>
+                    <div class="track-info">
+                        <h3 class="track-title">summer haze</h3>
+                        <p class="track-artist">sunset collective</p>
+                    </div>
+                    <div class="track-meta">
+                        <span class="track-time">2:55</span>
+                        <button class="track-like-btn" aria-label="Like track">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="track-card" data-track-id="3">
+                    <div class="track-artwork">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Track artwork">
+                        <button class="track-play-btn" aria-label="Play track">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="track-info">
+                        <h3 class="track-title">digital dreams</h3>
+                        <p class="track-artist">pixel wave</p>
+                    </div>
+                    <div class="track-meta">
+                        <span class="track-time">4:20</span>
+                        <button class="track-like-btn" aria-label="Like track">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="track-card" data-track-id="4">
+                    <div class="track-artwork">
+                        <img src="https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Track artwork">
+                        <button class="track-play-btn" aria-label="Play track">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="track-info">
+                        <h3 class="track-title">neon lights</h3>
+                        <p class="track-artist">cyberdream</p>
+                    </div>
+                    <div class="track-meta">
+                        <span class="track-time">3:15</span>
+                        <button class="track-like-btn liked" aria-label="Unlike track">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Parallax Quote -->
+    <div class="parallax-quote" data-quote-index="2">
+        your vibe attracts your tribe
+    </div>
+
+    <!-- Quote Section -->
+    <section class="section">
+        <div class="container">
+            <div class="quote-card">
+                <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                <p class="quote-text">the right song can turn your whole day around, shift your mood, or make you feel
+                    seen.</p>
+                <div class="quote-author">— your vybe curator</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final Y2K Quote Banner Before Footer -->
+    <div class="scrolling-quotes-container y2k">
+        <div class="scrolling-quotes marquee reverse">
+            <div class="marquee-content">
+                <span class="quote-item">living my best life <i class="fas fa-fire"></i></span>
+                <span class="quote-item">on repeat forever <i class="fas fa-redo"></i></span>
+                <span class="quote-item">music speaks louder <i class="fas fa-volume-up"></i></span>
+                <span class="quote-item">your vibe, your tribe <i class="fas fa-users"></i></span>
+                <span class="quote-item">soundtracking life <i class="fas fa-play-circle"></i></span>
+                <span class="quote-item">big mood <i class="fas fa-sun"></i></span>
+            </div>
+            <div class="marquee-content" aria-hidden="true">
+                <span class="quote-item">living my best life <i class="fas fa-fire"></i></span>
+                <span class="quote-item">on repeat forever <i class="fas fa-redo"></i></span>
+                <span class="quote-item">music speaks louder <i class="fas fa-volume-up"></i></span>
+                <span class="quote-item">your vibe, your tribe <i class="fas fa-users"></i></span>
+                <span class="quote-item">soundtracking life <i class="fas fa-play-circle"></i></span>
+                <span class="quote-item">big mood <i class="fas fa-sun"></i></span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#" class="footer-brand">vybe</a>
+                    <p class="footer-tagline">your personal soundtrack to life. discover music that matches your exact
+                        mood and aesthetic.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-heading">quick links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">home</a></li>
+                        <li><a href="#">discover</a></li>
+                        <li><a href="#">trending</a></li>
+                        <li><a href="#">about us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">chill vibes</a></li>
+                        <li><a href="#">workout energy</a></li>
+                        <li><a href="#">focus flow</a></li>
+                        <li><a href="#">party mode</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">help center</a></li>
+                        <li><a href="#">privacy policy</a></li>
+                        <li><a href="#">terms of service</a></li>
+                        <li><a href="#">contact us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Vybe. All rights reserved. Your sound, your mood, always.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="preloader.js"></script>
+    <script src="cursor.js"></script>
+    <script src="animations.js"></script>
+    <script src="script.js"></script>
+    <script src="playlist-functions-fixed.js"></script>
+</body>
+
+</html>

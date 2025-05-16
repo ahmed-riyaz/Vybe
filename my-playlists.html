@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Playlists - Vybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+    <style>
+        /* Styles specific to My Playlists page */
+        .my-playlists-container {
+            padding: var(--space-xl) 0;
+            min-height: 60vh;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            padding: 0 var(--space-lg);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .create-playlist-btn {
+            padding: var(--space-sm) var(--space-lg);
+            font-size: 0.95rem;
+            font-weight: 600;
+            background-color: var(--pink-hot);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        .create-playlist-btn:hover {
+            background-color: var(--pink-light);
+        }
+        .create-playlist-btn:disabled {
+            background-color: var(--grey-dark);
+            cursor: not-allowed;
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: var(--space-xl);
+            background: rgba(30, 30, 35, 0.5);
+            border-radius: var(--radius-md);
+            max-width: 600px;
+            margin: var(--space-xl) auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .login-prompt p {
+            color: var(--white-muted);
+            margin-bottom: var(--space-lg);
+        }
+
+        .login-btn {
+             padding: var(--space-md) var(--space-xl);
+             font-size: 1.1rem;
+             font-weight: 600;
+             background-color: #1DB954; /* Spotify Green */
+             color: var(--white);
+             border: none;
+             border-radius: var(--radius-lg);
+             cursor: pointer;
+             transition: background-color 0.3s ease, transform 0.1s ease;
+             display: inline-flex;
+             align-items: center;
+             gap: var(--space-sm);
+        }
+        .login-btn:hover {
+            background-color: #1ED760;
+        }
+
+        .playlists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        /* Re-use category-card styles or create similar playlist-card styles */
+        .playlist-card {
+            background: linear-gradient(145deg, var(--black-alt), var(--black-soft));
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .playlist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .playlist-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block; /* Remove bottom space */
+        }
+        .playlist-card-placeholder {
+             width: 100%;
+             height: 180px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             background-color: var(--grey-dark);
+             color: var(--white-muted);
+        }
+        .playlist-card-placeholder i {
+            font-size: 3rem;
+        }
+
+        .playlist-card-content {
+            padding: var(--space-md);
+        }
+
+        .playlist-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--space-xs);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-card-owner {
+            font-size: 0.85rem;
+            color: var(--white-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--black-alt);
+            margin: auto;
+            padding: var(--space-lg);
+            border: 1px solid var(--grey-dark);
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--radius-md);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .close-btn {
+            color: var(--white-muted);
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-md);
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            margin-bottom: var(--space-lg);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .modal label {
+            display: block;
+            margin-bottom: var(--space-xs);
+            color: var(--white-soft);
+            font-size: 0.9rem;
+        }
+
+        .modal input[type="text"],
+        .modal textarea {
+            width: 100%;
+            padding: var(--space-sm);
+            margin-bottom: var(--space-md);
+            border: 1px solid var(--grey-dark);
+            border-radius: var(--radius-xs);
+            background-color: var(--black-soft);
+            color: var(--white);
+            font-size: 1rem;
+        }
+        .modal textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal button {
+            /* Use styles from create-playlist-btn or similar */
+            padding: var(--space-sm) var(--space-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: var(--pink-hot);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .modal button:hover {
+            background-color: var(--pink-light);
+        }
+        .modal button:disabled {
+            background-color: var(--grey-dark);
+            cursor: not-allowed;
+        }
+
+        .loading, .error-message, .info-message {
+            text-align: center;
+            padding: var(--space-xl);
+            color: var(--white-muted);
+        }
+         .loading-spinner {
+             border: 4px solid rgba(255, 255, 255, 0.2);
+             border-left-color: var(--pink-hot);
+             border-radius: 50%;
+             width: 40px;
+             height: 40px;
+             animation: spin 1s linear infinite;
+             margin: 0 auto var(--space-md) auto;
+         }
+         @keyframes spin { to { transform: rotate(360deg); } }
+
+         /* Utility classes */
+        .hidden {
+            display: none;
+        }
+        
+        .ml-auto {
+            margin-left: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">vybe</a>
+            <ul class="navbar-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Discover</a></li>
+                <li><a href="#">Trending</a></li>
+                <li><a href="my-playlists.html" class="active">My Playlists</a></li>
+                <li><a href="search.html" aria-label="Search"><i class="fas fa-search"></i></a></li>
+            </ul>
+            <!-- Add Logout Button if logged in -->
+            <button id="logout-btn" class="btn btn-secondary ml-auto hidden">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="my-playlists-container">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">My Playlists</h1>
+                <button id="create-playlist-btn" class="create-playlist-btn" disabled>
+                    <i class="fas fa-plus"></i> Create Playlist
+                </button>
+            </div>
+
+            <!-- Login Prompt -->
+            <div id="login-prompt" class="login-prompt hidden">
+                <p>Log in with your Spotify account to see and create your playlists.</p>
+                <button id="login-btn" class="login-btn">
+                    <i class="fab fa-spotify"></i> Log in with Spotify
+                </button>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="loading hidden">
+                <div class="loading-spinner"></div>
+                <p>Loading your playlists...</p>
+            </div>
+
+            <!-- Error Message Area -->
+            <div id="message-area" class="info-message hidden"></div>
+
+            <!-- Playlists Grid -->
+            <div id="playlists-grid" class="playlists-grid">
+                <!-- User playlists will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Playlist Modal -->
+    <div id="create-playlist-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal-btn" class="close-btn">&times;</span>
+            <h2>Create New Playlist</h2>
+            <form id="create-playlist-form">
+                <label for="playlist-name">Playlist Name:</label>
+                <input type="text" id="playlist-name-input" name="playlist-name" required minlength="1">
+
+                <label for="playlist-description">Description (Optional):</label>
+                <textarea id="playlist-description-input" name="playlist-description"></textarea>
+
+                <button type="submit" id="submit-create-playlist">Create Playlist</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+       <div class="container">
+           <!-- Footer content -->
+           <div class="copyright">
+               &copy; 2025 Vybe. All rights reserved.
+           </div>
+       </div>
+   </footer>
+
+    <script src="auth.js"></script>
+    <script src="my-playlists.js"></script>
+</body>
+</html>
